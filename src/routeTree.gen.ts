@@ -15,6 +15,7 @@ import { Route as CapacityRouteImport } from './routes/capacity'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DemandRouteImport } from './routes/demand'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as NetworkRouteImport } from './routes/network'
 import { Route as TransactionsRouteImport } from './routes/transactions'
 import { Route as MatchesIndexRouteImport } from './routes/matches.index'
 import { Route as MatchesMatchIdRouteImport } from './routes/matches.$matchId'
@@ -49,6 +50,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NetworkRoute = NetworkRouteImport.update({
+  id: '/network',
+  path: '/network',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TransactionsRoute = TransactionsRouteImport.update({
   id: '/transactions',
   path: '/transactions',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/demand': typeof DemandRoute
   '/login': typeof LoginRoute
+  '/network': typeof NetworkRoute
   '/transactions': typeof TransactionsRoute
   '/matches/$matchId': typeof MatchesMatchIdRoute
   '/matches/': typeof MatchesIndexRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/demand': typeof DemandRoute
   '/login': typeof LoginRoute
+  '/network': typeof NetworkRoute
   '/transactions': typeof TransactionsRoute
   '/matches/$matchId': typeof MatchesMatchIdRoute
   '/matches': typeof MatchesIndexRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/demand': typeof DemandRoute
   '/login': typeof LoginRoute
+  '/network': typeof NetworkRoute
   '/transactions': typeof TransactionsRoute
   '/matches/$matchId': typeof MatchesMatchIdRoute
   '/matches/': typeof MatchesIndexRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/demand'
     | '/login'
+    | '/network'
     | '/transactions'
     | '/matches/$matchId'
     | '/matches/'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/demand'
     | '/login'
+    | '/network'
     | '/transactions'
     | '/matches/$matchId'
     | '/matches'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/demand'
     | '/login'
+    | '/network'
     | '/transactions'
     | '/matches/$matchId'
     | '/matches/'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DemandRoute: typeof DemandRoute
   LoginRoute: typeof LoginRoute
+  NetworkRoute: typeof NetworkRoute
   TransactionsRoute: typeof TransactionsRoute
   MatchesMatchIdRoute: typeof MatchesMatchIdRoute
   MatchesIndexRoute: typeof MatchesIndexRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/network': {
+      id: '/network'
+      path: '/network'
+      fullPath: '/network'
+      preLoaderRoute: typeof NetworkRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/transactions': {
       id: '/transactions'
       path: '/transactions'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DemandRoute: DemandRoute,
   LoginRoute: LoginRoute,
+  NetworkRoute: NetworkRoute,
   TransactionsRoute: TransactionsRoute,
   MatchesMatchIdRoute: MatchesMatchIdRoute,
   MatchesIndexRoute: MatchesIndexRoute,
