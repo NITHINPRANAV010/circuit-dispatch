@@ -43,7 +43,7 @@ export function NetworkMap({
   return (
     <div className="relative">
       <svg
-        viewBox="0 0 900 470"
+        viewBox="250 10 470 460"
         style={{ height }}
         className="w-full"
         role="img"
@@ -54,7 +54,7 @@ export function NetworkMap({
             <path d="M45 0H0V45" fill="none" stroke="var(--border)" strokeWidth="0.6" opacity="0.5" />
           </pattern>
         </defs>
-        <rect width="900" height="470" fill="url(#netgrid)" />
+        <rect x="250" y="10" width="470" height="460" fill="url(#netgrid)" />
 
         {edges.map((e, i) => {
           const a = CITY_POS[e.from];

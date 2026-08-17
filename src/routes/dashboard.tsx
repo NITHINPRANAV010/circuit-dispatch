@@ -115,7 +115,7 @@ function DashboardPage() {
             </header>
             <div className="space-y-4 p-4">
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
-                <span className="truncate font-mono text-sm">{top.capacity.vehicleId}</span>
+                <span className="truncate font-mono text-sm uppercase tracking-wider">{top.capacity.vehicleId}</span>
                 <span className="label-sys shrink-0">
                   {top.capacity.source.toUpperCase()} → {top.capacity.destination.toUpperCase()}
                 </span>
