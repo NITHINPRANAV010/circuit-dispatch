@@ -60,7 +60,16 @@ export function LiveNetwork() {
   const [hover, setHover] = useState<string | null>(null);
   const [phase, setPhase] = useState(0);
 
-  useEffect(() => setMounted(true), []);
+  const [narrow, setNarrow] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const mq = window.matchMedia("(max-width: 639px)");
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     if (!mounted) return;
@@ -158,8 +167,8 @@ export function LiveNetwork() {
 
       <div className="relative border border-t-0 border-border bg-surface/40">
         <svg
-          viewBox="140 10 790 560"
-          className="h-auto w-full"
+          viewBox={narrow ? "235 195 590 285" : "140 10 790 560"}
+          className="h-[300px] w-full sm:h-auto"
           role="img"
           aria-label="Live CIRCUIT logistics network: trucks moving between South Indian cities with open capacity signals"
         >
@@ -358,7 +367,7 @@ export function LiveNetwork() {
 
         {/* Detection / demand / match narration — overlay, JetBrains Mono */}
         {hero && (
-          <div className="pointer-events-none absolute inset-x-3 bottom-3 flex flex-wrap items-end gap-2">
+          <div className="pointer-events-none flex flex-wrap items-end gap-2 border-t border-border p-3 sm:absolute sm:inset-x-3 sm:bottom-3 sm:border-0 sm:p-0">
             {phase >= 1 && (
               <div className="border border-signal-cyan/40 bg-background/85 px-3 py-2 w-[190px]">
                 <div className="font-mono text-[10px] tracking-[0.18em] text-signal-cyan">
