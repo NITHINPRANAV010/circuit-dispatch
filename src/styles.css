@@ -167,3 +167,68 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Live network (homepage) ───────────────────────────── */
+.ln-truck {
+  animation-name: ln-run;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.ln-scan {
+  animation: ln-scan 1.8s ease-out infinite;
+  transform-origin: center;
+}
+
+.ln-match {
+  stroke-dasharray: 6 8;
+  animation: ln-dash 1.2s linear infinite, ln-in 0.5s ease-out both;
+}
+
+@keyframes ln-run {
+  from {
+    transform: translate(var(--x1), var(--y1));
+  }
+  to {
+    transform: translate(var(--x2), var(--y2));
+  }
+}
+
+@keyframes ln-scan {
+  0% {
+    r: 8;
+    opacity: 0.9;
+  }
+  100% {
+    r: 26;
+    opacity: 0;
+  }
+}
+
+@keyframes ln-dash {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+@keyframes ln-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ln-truck {
+    animation: none;
+    transform: translate(calc((var(--x1) + var(--x2)) / 2), calc((var(--y1) + var(--y2)) / 2));
+  }
+
+  .ln-scan,
+  .ln-match {
+    animation: none;
+  }
+}
