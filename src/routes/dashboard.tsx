@@ -126,22 +126,22 @@ function DashboardPage() {
                 distanceKm={MatchingEngine.getDistance(top.capacity.source, top.capacity.destination)}
                 note={`${(top.capacity.unusedCapacity ?? 0).toFixed(1)}T OPEN`}
               />
-              <div className="grid grid-cols-3 border border-border">
-                <div className="border-r border-border px-3 py-2">
+              <div className="grid grid-cols-1 border border-border sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+                <div className="border-b border-border px-3 py-3 sm:border-b-0 sm:border-r">
+                  <div className="label-sys">OPPORTUNITY PROBABILITY</div>
+                  <div className="font-mono text-3xl leading-tight text-signal-amber tabular-nums">
+                    <CountUp value={top.prediction.opportunityProbability} suffix="%" />
+                  </div>
+                </div>
+                <div className="border-b border-border px-3 py-3 sm:border-b-0 sm:border-r">
                   <div className="label-sys">OPEN</div>
-                  <div className="font-mono text-sm text-signal-green">
+                  <div className="font-mono text-lg text-signal-green">
                     {(top.capacity.unusedCapacity ?? 0).toFixed(1)}T
                   </div>
                 </div>
-                <div className="border-r border-border px-3 py-2">
-                  <div className="label-sys">OPPORTUNITY</div>
-                  <div className="font-mono text-sm text-signal-amber">
-                    {top.prediction.opportunityProbability}%
-                  </div>
-                </div>
-                <div className="px-3 py-2">
+                <div className="px-3 py-3">
                   <div className="label-sys">EST. VALUE</div>
-                  <div className="font-mono text-sm">{inr(top.estimatedRevenue)}</div>
+                  <div className="font-mono text-lg">{inr(top.estimatedRevenue)}</div>
                 </div>
               </div>
               <p className="text-xs leading-relaxed text-muted-foreground">
@@ -151,8 +151,9 @@ function DashboardPage() {
                 to="/matches"
                 className="inline-flex rounded-[4px] border border-signal-amber px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-signal-amber transition-colors hover:bg-signal-amber hover:text-background"
               >
-                Review match →
+                Find match →
               </Link>
+
             </div>
           </section>
         ) : (
