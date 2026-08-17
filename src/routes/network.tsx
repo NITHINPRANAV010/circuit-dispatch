@@ -42,6 +42,8 @@ function NetworkPage() {
     openTonnes: Math.max(0, c.totalCapacity - c.currentLoad),
     vehicleId: c.vehicleId,
     matched: c.status === "matched",
+    totalCapacity: c.totalCapacity,
+    currentLoad: c.currentLoad,
   }));
 
   const openTonnes = edges.reduce((s, e) => s + e.openTonnes, 0);

@@ -28,21 +28,10 @@ const PROOF = [
 ];
 
 const STEPS = [
-  {
-    n: "01",
-    t: "DECLARE CAPACITY",
-    d: "Post the truck, the lane and the payload already committed. CIRCUIT computes the unused tonnage.",
-  },
-  {
-    n: "02",
-    t: "MATCH ENGINE",
-    d: "Six weighted signals — capacity, route, time, price, distance, reliability — resolve to one explainable Match Index.",
-  },
-  {
-    n: "03",
-    t: "SETTLE",
-    d: "Accept a match and the lane is booked, utilization rises and the trade lands in the ledger.",
-  },
+  { n: "01", t: "DECLARE CAPACITY", d: "A truck posts its lane and committed payload. CIRCUIT computes the unused tonnage." },
+  { n: "02", t: "PREDICT OPPORTUNITY", d: "The forecast model scores how likely that capacity is to travel empty." },
+  { n: "03", t: "MATCH DEMAND", d: "Six weighted signals resolve compatible cargo into one explainable Match Index." },
+  { n: "04", t: "CREATE VALUE", d: "Accept the match: utilization rises and the trade settles in the ledger." },
 ];
 
 function Landing() {
@@ -104,21 +93,21 @@ function Landing() {
 
           <div className="min-w-0 space-y-4 rounded-lg border border-border bg-surface p-5">
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-              <span className="label-sys truncate">TRUCK #42 · LIVE MANIFEST</span>
+              <span className="label-sys truncate">TRK-042 · LIVE MANIFEST</span>
               <span className="label-sys shrink-0 text-signal-amber">UNDERLOADED</span>
             </div>
-            <CapacityRail vehicleId="TRUCK #42" total={16} load={10} />
+            <CapacityRail vehicleId="TRK-042" total={10} load={4} />
             <div className="border-t border-border pt-4">
-              <RouteLine origin="Chennai" destination="Bangalore" distanceKm={350} note="6.0T OPEN" />
+              <RouteLine origin="Chennai" destination="Bangalore" distanceKm={346} note="6.0T OPEN" />
             </div>
             <div className="grid grid-cols-2 gap-px border border-border bg-border">
               <div className="bg-surface px-4 py-3">
-                <div className="label-sys">BEST MATCH</div>
+                <div className="label-sys">MATCH INDEX</div>
                 <div className="mt-1 font-mono text-2xl text-signal-green">93</div>
               </div>
               <div className="bg-surface px-4 py-3">
                 <div className="label-sys">EST. VALUE</div>
-                <div className="mt-1 font-mono text-2xl">₹8,400</div>
+                <div className="mt-1 font-mono text-2xl">₹7,800</div>
               </div>
             </div>
           </div>
@@ -126,7 +115,7 @@ function Landing() {
 
         <section className="border-t border-border py-16">
           <h2 className="label-sys">HOW THE EXCHANGE RUNS</h2>
-          <div className="mt-6 grid gap-px border border-border bg-border md:grid-cols-3">
+          <div className="mt-6 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s) => (
               <article key={s.n} className="bg-surface p-6">
                 <div className="font-mono text-xs text-signal-green">{s.n}</div>
@@ -135,6 +124,18 @@ function Landing() {
               </article>
             ))}
           </div>
+        </section>
+
+        <section className="grid gap-6 border-t border-border py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+            DON&apos;T LET CAPACITY TRAVEL EMPTY.
+          </h2>
+          <Link
+            to="/dashboard"
+            className="justify-self-start rounded-[4px] bg-signal-green px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-background transition-opacity hover:opacity-90"
+          >
+            Open operations console →
+          </Link>
         </section>
       </main>
 

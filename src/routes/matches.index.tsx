@@ -40,6 +40,8 @@ function MatchesPage() {
   const [demandId, setDemandId] = useState<string | undefined>(search.demand);
   const [running, setRunning] = useState(false);
   const [ran, setRan] = useState(false);
+  const [sortBy, setSortBy] = useState<"index" | "value">("index");
+  const [minIndex, setMinIndex] = useState(0);
 
   useEffect(() => {
     if (search.demand) setDemandId(search.demand);
@@ -74,6 +76,12 @@ function MatchesPage() {
     ? allMatches.filter((m: any) => m.demandId === selected)
     : allMatches;
   const demand = selected ? State.getDemandById(selected) : null;
+
+  const visible = [...matches]
+    .filter((m: any) => m.totalScore >= minIndex)
+    .sort((a: any, b: any) =>
+      sortBy === "index" ? b.totalScore - a.totalScore : b.estimatedRevenue - a.estimatedRevenue,
+    );
 
   void version;
 
@@ -139,8 +147,43 @@ function MatchesPage() {
           ]}
         />
       ) : (
+        <>
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <span className="label-sys mr-1">SORT</span>
+          {([["index", "MATCH INDEX"], ["value", "EST. VALUE"]] as const).map(([k, l]) => (
+            <button
+              key={k}
+              type="button"
+              aria-pressed={sortBy === k}
+              onClick={() => setSortBy(k)}
+              className={`rounded-[4px] border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors ${
+                sortBy === k
+                  ? "border-signal-green text-signal-green"
+                  : "border-border text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {l}
+            </button>
+          ))}
+          <span className="label-sys ml-3 mr-1">MIN INDEX</span>
+          {[0, 80, 90].map((v) => (
+            <button
+              key={v}
+              type="button"
+              aria-pressed={minIndex === v}
+              onClick={() => setMinIndex(v)}
+              className={`rounded-[4px] border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors ${
+                minIndex === v
+                  ? "border-signal-cyan text-signal-cyan"
+                  : "border-border text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {v === 0 ? "ALL" : `${v}+`}
+            </button>
+          ))}
+        </div>
         <ul className="grid gap-4 lg:grid-cols-2">
-          {matches.map((m: any) => (
+          {visible.map((m: any) => (
             <li key={m.id}>
               <Panel
                 title={`${m.capacity.vehicleId} / ${m.demandId}`}
@@ -199,6 +242,7 @@ function MatchesPage() {
             </li>
           ))}
         </ul>
+        </>
       )}
     </AppShell>
   );

@@ -50,6 +50,10 @@ function DashboardPage() {
   const opportunities = State.getOpportunities();
   const top = opportunities[0];
 
+  const probByCapacity = new Map<string, number>(
+    opportunities.map((o: any) => [o.capacity.id, o.prediction.opportunityProbability]),
+  );
+
   const edges: NetworkEdge[] = capacities.slice(0, 5).map((c: any) => ({
     id: c.id,
     from: MatchingEngine.normalizeCity(c.source),
@@ -57,6 +61,9 @@ function DashboardPage() {
     openTonnes: c.unusedCapacity ?? c.totalCapacity - c.currentLoad,
     vehicleId: c.vehicleId,
     matched: c.status === "matched",
+    totalCapacity: c.totalCapacity,
+    currentLoad: c.currentLoad,
+    opportunity: probByCapacity.get(c.id),
   }));
 
   return (
@@ -71,17 +78,20 @@ function DashboardPage() {
       }
     >
       {/* KPI rail */}
-      <div className="grid grid-cols-2 divide-border border border-border bg-surface sm:grid-cols-3 lg:grid-cols-5 lg:divide-x rounded-lg">
-        <Stat label="POTENTIAL REVENUE" value={<CountUp value={metrics.potentialRevenue} prefix="₹" />} tone="green" />
-        <Stat label="CAPACITY RECOVERED" value={<CountUp value={metrics.capacityRecovered} suffix="%" />} tone="cyan" />
-        <Stat label="ACTIVE VEHICLES" value={<CountUp value={metrics.activeCapacity} />} />
-        <Stat label="CIRCUIT MATCHES" value={<CountUp value={metrics.aiMatches} />} tone="amber" />
-        <Stat
-          label="CO₂ AVOIDED"
-          value={<CountUp value={metrics.co2Avoided} decimals={1} suffix=" KG" />}
-          hint="Estimated · demo calculation"
-        />
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <div className="grid min-w-[640px] grid-cols-5 divide-x divide-border rounded-lg border border-border bg-surface">
+          <Stat label="POTENTIAL REVENUE" value={<CountUp value={metrics.potentialRevenue} prefix="₹" />} tone="green" />
+          <Stat label="CAPACITY RECOVERED" value={<CountUp value={metrics.capacityRecovered} suffix="%" />} tone="cyan" />
+          <Stat label="ACTIVE VEHICLES" value={<CountUp value={metrics.activeCapacity} />} />
+          <Stat label="CIRCUIT MATCHES" value={<CountUp value={metrics.aiMatches} />} tone="amber" />
+          <Stat
+            label="EST. CO₂ IMPACT"
+            value={<CountUp value={metrics.co2Avoided} decimals={1} suffix=" KG" />}
+            hint="Estimated · simulated"
+          />
+        </div>
       </div>
+
 
       {/* Network centerpiece */}
       <Panel
@@ -105,7 +115,7 @@ function DashboardPage() {
             </header>
             <div className="space-y-4 p-4">
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
-                <span className="truncate font-mono text-sm">{top.capacity.vehicleId}</span>
+                <span className="truncate font-mono text-sm uppercase tracking-wider">{top.capacity.vehicleId}</span>
                 <span className="label-sys shrink-0">
                   {top.capacity.source.toUpperCase()} → {top.capacity.destination.toUpperCase()}
                 </span>
@@ -116,22 +126,22 @@ function DashboardPage() {
                 distanceKm={MatchingEngine.getDistance(top.capacity.source, top.capacity.destination)}
                 note={`${(top.capacity.unusedCapacity ?? 0).toFixed(1)}T OPEN`}
               />
-              <div className="grid grid-cols-3 border border-border">
-                <div className="border-r border-border px-3 py-2">
+              <div className="grid grid-cols-1 border border-border sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_minmax(0,1fr)]">
+                <div className="border-b border-border px-3 py-3 sm:border-b-0 sm:border-r">
+                  <div className="label-sys">OPPORTUNITY PROBABILITY</div>
+                  <div className="font-mono text-3xl leading-tight text-signal-amber tabular-nums">
+                    <CountUp value={top.prediction.opportunityProbability} suffix="%" />
+                  </div>
+                </div>
+                <div className="border-b border-border px-3 py-3 sm:border-b-0 sm:border-r">
                   <div className="label-sys">OPEN</div>
-                  <div className="font-mono text-sm text-signal-green">
+                  <div className="font-mono text-lg text-signal-green">
                     {(top.capacity.unusedCapacity ?? 0).toFixed(1)}T
                   </div>
                 </div>
-                <div className="border-r border-border px-3 py-2">
-                  <div className="label-sys">OPPORTUNITY</div>
-                  <div className="font-mono text-sm text-signal-amber">
-                    {top.prediction.opportunityProbability}%
-                  </div>
-                </div>
-                <div className="px-3 py-2">
+                <div className="px-3 py-3">
                   <div className="label-sys">EST. VALUE</div>
-                  <div className="font-mono text-sm">{inr(top.estimatedRevenue)}</div>
+                  <div className="font-mono text-lg">{inr(top.estimatedRevenue)}</div>
                 </div>
               </div>
               <p className="text-xs leading-relaxed text-muted-foreground">
@@ -141,8 +151,9 @@ function DashboardPage() {
                 to="/matches"
                 className="inline-flex rounded-[4px] border border-signal-amber px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-signal-amber transition-colors hover:bg-signal-amber hover:text-background"
               >
-                Review match →
+                Find match →
               </Link>
+
             </div>
           </section>
         ) : (
