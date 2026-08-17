@@ -167,7 +167,7 @@ export function LiveNetwork() {
 
       <div className="relative border border-t-0 border-border bg-surface/40">
         <svg
-          viewBox={narrow ? "235 195 590 285" : "140 10 790 560"}
+          viewBox={narrow ? "235 195 650 300" : "140 10 790 560"}
           className="h-[300px] w-full sm:h-auto"
           role="img"
           aria-label="Live CIRCUIT logistics network: trucks moving between South Indian cities with open capacity signals"
