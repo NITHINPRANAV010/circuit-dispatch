@@ -86,7 +86,7 @@ export function LiveNetwork() {
       const open = c.unusedCapacity ?? c.totalCapacity - c.currentLoad;
       let opportunity = 0;
       try {
-        opportunity = Math.round(OpportunityPredictor.predict(c)?.probability ?? 0);
+        opportunity = Math.round(OpportunityPredictor.predict(c)?.opportunityProbability ?? 0);
       } catch {
         opportunity = 0;
       }
