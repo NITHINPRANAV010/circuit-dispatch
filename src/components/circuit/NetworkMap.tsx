@@ -1,12 +1,12 @@
 import { useState, type ReactNode } from "react";
 
 const CITY_POS: Record<string, { x: number; y: number }> = {
-  Chennai: { x: 730, y: 180 },
-  Bangalore: { x: 330, y: 245 },
-  Coimbatore: { x: 240, y: 400 },
-  Hyderabad: { x: 150, y: 80 },
-  Madurai: { x: 500, y: 405 },
-  Pondicherry: { x: 650, y: 320 },
+  Chennai: { x: 1010, y: 170 },
+  Bangalore: { x: 470, y: 250 },
+  Coimbatore: { x: 330, y: 395 },
+  Hyderabad: { x: 190, y: 85 },
+  Madurai: { x: 700, y: 400 },
+  Pondicherry: { x: 890, y: 320 },
 };
 
 export interface NetworkEdge {
@@ -43,8 +43,8 @@ export function NetworkMap({
   return (
     <div className="relative">
       <svg
-        viewBox="60 40 800 400"
-        style={{ maxHeight: height * 1.6 }}
+        viewBox="80 40 1080 400"
+        style={{ minHeight: height }}
         className="h-auto w-full"
         role="img"
         aria-label="CIRCUIT capacity network: active routes and open capacity"
@@ -54,7 +54,7 @@ export function NetworkMap({
             <path d="M45 0H0V45" fill="none" stroke="var(--border)" strokeWidth="0.6" opacity="0.5" />
           </pattern>
         </defs>
-        <rect x="60" y="40" width="800" height="400" fill="url(#netgrid)" />
+        <rect x="80" y="40" width="1080" height="400" fill="url(#netgrid)" />
 
         {edges.map((e, i) => {
           const a = CITY_POS[e.from];
