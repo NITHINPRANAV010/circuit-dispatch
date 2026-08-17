@@ -44,8 +44,8 @@ export function NetworkMap({
     <div className="relative">
       <svg
         viewBox="60 40 800 400"
-        style={{ height }}
-        className="w-full"
+        style={{ maxHeight: height * 1.6 }}
+        className="h-auto w-full"
         role="img"
         aria-label="CIRCUIT capacity network: active routes and open capacity"
       >
