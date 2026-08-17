@@ -16,10 +16,10 @@ export interface NetworkEdge {
   openTonnes: number;
   vehicleId: string;
   matched?: boolean;
-  totalCapacity?: number;
-  currentLoad?: number;
-  opportunity?: number;
-  distanceKm?: number;
+  totalCapacity?: number | undefined;
+  currentLoad?: number | undefined;
+  opportunity?: number | undefined;
+  distanceKm?: number | undefined;
 }
 
 export function NetworkMap({
