@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 
 const CITY_POS: Record<string, { x: number; y: number }> = {
   Chennai: { x: 640, y: 250 },
@@ -16,6 +16,10 @@ export interface NetworkEdge {
   openTonnes: number;
   vehicleId: string;
   matched?: boolean;
+  totalCapacity?: number;
+  currentLoad?: number;
+  opportunity?: number;
+  distanceKm?: number;
 }
 
 export function NetworkMap({
@@ -27,11 +31,14 @@ export function NetworkMap({
   footer?: ReactNode;
   height?: number;
 }) {
+  const [activeId, setActiveId] = useState<string | null>(null);
   const used = new Set<string>();
   edges.forEach((e) => {
     used.add(e.from);
     used.add(e.to);
   });
+
+  const selected = edges.find((e) => e.id === activeId) ?? null;
 
   return (
     <div className="relative">
@@ -56,8 +63,30 @@ export function NetworkMap({
           const mx = (a.x + b.x) / 2;
           const my = (a.y + b.y) / 2;
           const stroke = e.matched ? "var(--signal-cyan)" : "var(--signal-green)";
+          const isActive = e.id === activeId;
+          const dim = activeId !== null && !isActive;
           return (
-            <g key={e.id}>
+            <g
+              key={e.id}
+              tabIndex={0}
+              role="button"
+              aria-label={`Route ${e.from} to ${e.to}, vehicle ${e.vehicleId}, ${e.openTonnes.toFixed(1)} tonnes open`}
+              className="cursor-pointer outline-none"
+              opacity={dim ? 0.32 : 1}
+              onMouseEnter={() => setActiveId(e.id)}
+              onMouseLeave={() => setActiveId((v) => (v === e.id ? null : v))}
+              onFocus={() => setActiveId(e.id)}
+              onBlur={() => setActiveId((v) => (v === e.id ? null : v))}
+              onClick={() => setActiveId((v) => (v === e.id ? null : e.id))}
+            >
+              <line
+                x1={a.x}
+                y1={a.y}
+                x2={b.x}
+                y2={b.y}
+                stroke="transparent"
+                strokeWidth="18"
+              />
               <line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="var(--border)" strokeWidth="2" />
               <line
                 x1={a.x}
@@ -65,7 +94,7 @@ export function NetworkMap({
                 x2={b.x}
                 y2={b.y}
                 stroke={stroke}
-                strokeWidth="1.5"
+                strokeWidth={isActive ? 2.6 : 1.5}
                 className="route-dash"
                 style={{ animationDelay: `${i * 180}ms` }}
               />
@@ -75,7 +104,7 @@ export function NetworkMap({
                 width="92"
                 height="18"
                 fill="var(--surface)"
-                stroke="var(--border)"
+                stroke={isActive ? stroke : "var(--border)"}
               />
               <text
                 x={mx}
@@ -139,7 +168,47 @@ export function NetworkMap({
           );
         })}
       </svg>
+
+      <div className="mt-2 border-t border-border pt-2">
+        {selected ? (
+          <dl className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-3 lg:grid-cols-6">
+            <Field label="TRUCK" value={selected.vehicleId.toUpperCase()} />
+            <Field
+              label="ROUTE"
+              value={`${selected.from.toUpperCase()} → ${selected.to.toUpperCase()}`}
+            />
+            <Field
+              label="TOTAL"
+              value={selected.totalCapacity != null ? `${selected.totalCapacity.toFixed(1)}T` : "—"}
+            />
+            <Field
+              label="LOADED"
+              value={selected.currentLoad != null ? `${selected.currentLoad.toFixed(1)}T` : "—"}
+              tone="text-signal-cyan"
+            />
+            <Field label="OPEN" value={`${selected.openTonnes.toFixed(1)}T`} tone="text-signal-green" />
+            <Field
+              label="OPPORTUNITY"
+              value={selected.opportunity != null ? `${selected.opportunity}%` : "—"}
+              tone="text-signal-amber"
+            />
+          </dl>
+        ) : (
+          <p className="label-sys">HOVER OR SELECT A LANE FOR VEHICLE DETAIL</p>
+        )}
+      </div>
       {footer}
+    </div>
+  );
+}
+
+function Field({ label, value, tone }: { label: string; value: string; tone?: string }) {
+  return (
+    <div className="min-w-0">
+      <dt className="label-sys truncate">{label}</dt>
+      <dd className={`truncate font-mono text-xs tabular-nums ${tone ?? "text-foreground"}`}>
+        {value}
+      </dd>
     </div>
   );
 }
