@@ -9,8 +9,8 @@ const CITY: Record<string, { x: number; y: number; anchor: "start" | "end" | "mi
   Chennai: { x: 760, y: 250, anchor: "start" },
   Bangalore: { x: 420, y: 300, anchor: "end" },
   Coimbatore: { x: 285, y: 395, anchor: "end" },
-  Madurai: { x: 490, y: 465, anchor: "middle" },
-  Kochi: { x: 260, y: 495, anchor: "start" },
+  Madurai: { x: 520, y: 430, anchor: "middle" },
+  Kochi: { x: 215, y: 470, anchor: "start" },
 };
 
 /** Low-opacity background lattice — depth only, no data. */
