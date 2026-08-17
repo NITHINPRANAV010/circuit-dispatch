@@ -8,9 +8,9 @@ const CITY: Record<string, { x: number; y: number; anchor: "start" | "end" | "mi
   Hyderabad: { x: 300, y: 70, anchor: "middle" },
   Chennai: { x: 760, y: 250, anchor: "start" },
   Bangalore: { x: 420, y: 300, anchor: "end" },
-  Coimbatore: { x: 290, y: 420, anchor: "end" },
-  Madurai: { x: 480, y: 505, anchor: "middle" },
-  Kochi: { x: 250, y: 540, anchor: "start" },
+  Coimbatore: { x: 285, y: 395, anchor: "end" },
+  Madurai: { x: 490, y: 465, anchor: "middle" },
+  Kochi: { x: 260, y: 495, anchor: "start" },
 };
 
 /** Low-opacity background lattice — depth only, no data. */
@@ -158,7 +158,7 @@ export function LiveNetwork() {
 
       <div className="relative border border-t-0 border-border bg-surface/40">
         <svg
-          viewBox="140 10 790 630"
+          viewBox="140 10 790 560"
           className="h-auto w-full"
           role="img"
           aria-label="Live CIRCUIT logistics network: trucks moving between South Indian cities with open capacity signals"
@@ -174,7 +174,7 @@ export function LiveNetwork() {
               />
             </pattern>
           </defs>
-          <rect x="140" y="10" width="790" height="630" fill="url(#ln-grid)" />
+          <rect x="140" y="10" width="790" height="560" fill="url(#ln-grid)" />
 
           {/* depth layer — inactive lattice */}
           {BACKDROP.map(([a, b]) => {
