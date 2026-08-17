@@ -6,7 +6,7 @@ import { OpportunityPredictor } from "@/lib/circuit/opportunity-predictor.js";
 /* ── Stylised South-India node layout (visual clarity over geo accuracy) ── */
 const CITY: Record<string, { x: number; y: number; anchor: "start" | "end" | "middle" }> = {
   Hyderabad: { x: 300, y: 70, anchor: "middle" },
-  Chennai: { x: 830, y: 250, anchor: "start" },
+  Chennai: { x: 760, y: 250, anchor: "start" },
   Bangalore: { x: 420, y: 300, anchor: "end" },
   Coimbatore: { x: 290, y: 450, anchor: "end" },
   Madurai: { x: 470, y: 560, anchor: "middle" },
@@ -158,7 +158,7 @@ export function LiveNetwork() {
 
       <div className="relative border border-t-0 border-border bg-surface/40">
         <svg
-          viewBox="120 20 780 610"
+          viewBox="140 10 790 630"
           className="h-auto w-full"
           role="img"
           aria-label="Live CIRCUIT logistics network: trucks moving between South Indian cities with open capacity signals"
@@ -174,7 +174,7 @@ export function LiveNetwork() {
               />
             </pattern>
           </defs>
-          <rect x="120" y="20" width="780" height="610" fill="url(#ln-grid)" />
+          <rect x="140" y="10" width="790" height="630" fill="url(#ln-grid)" />
 
           {/* depth layer — inactive lattice */}
           {BACKDROP.map(([a, b]) => {
@@ -358,7 +358,7 @@ export function LiveNetwork() {
 
         {/* Detection / demand / match narration — overlay, JetBrains Mono */}
         {hero && (
-          <div className="pointer-events-none absolute left-3 top-3 w-[220px] space-y-2">
+          <div className="pointer-events-none absolute bottom-3 left-3 w-[220px] space-y-2">
             {phase >= 1 && (
               <div className="border border-signal-cyan/40 bg-background/85 px-3 py-2">
                 <div className="font-mono text-[10px] tracking-[0.18em] text-signal-cyan">
@@ -398,7 +398,7 @@ export function LiveNetwork() {
 
         {/* Lightweight truck tooltip */}
         {active && (
-          <div className="pointer-events-none absolute bottom-3 right-3 w-[210px] border border-border bg-background/95 px-3 py-2.5">
+          <div className="pointer-events-none absolute right-3 top-3 w-[210px] border border-border bg-background/95 px-3 py-2.5">
             <div className="font-mono text-[11px] tracking-[0.18em] text-signal-green">
               {active.short}
             </div>
