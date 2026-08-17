@@ -10,7 +10,7 @@ const CITY: Record<string, { x: number; y: number; anchor: "start" | "end" | "mi
   Bangalore: { x: 420, y: 300, anchor: "end" },
   Coimbatore: { x: 290, y: 450, anchor: "end" },
   Madurai: { x: 470, y: 560, anchor: "middle" },
-  Kochi: { x: 190, y: 590, anchor: "end" },
+  Kochi: { x: 230, y: 590, anchor: "start" },
 };
 
 /** Low-opacity background lattice — depth only, no data. */
@@ -358,9 +358,9 @@ export function LiveNetwork() {
 
         {/* Detection / demand / match narration — overlay, JetBrains Mono */}
         {hero && (
-          <div className="pointer-events-none absolute bottom-3 left-3 w-[220px] space-y-2">
+          <div className="pointer-events-none absolute inset-x-3 bottom-3 flex flex-wrap items-end gap-2">
             {phase >= 1 && (
-              <div className="border border-signal-cyan/40 bg-background/85 px-3 py-2">
+              <div className="border border-signal-cyan/40 bg-background/85 px-3 py-2 w-[190px]">
                 <div className="font-mono text-[10px] tracking-[0.18em] text-signal-cyan">
                   {phase === 1 ? "SCANNING LANE…" : "CAPACITY SIGNAL DETECTED"}
                 </div>
@@ -370,7 +370,7 @@ export function LiveNetwork() {
               </div>
             )}
             {phase >= 3 && demand && (
-              <div className="border border-signal-amber/40 bg-background/85 px-3 py-2">
+              <div className="border border-signal-amber/40 bg-background/85 px-3 py-2 w-[190px]">
                 <div className="font-mono text-[10px] tracking-[0.18em] text-signal-amber">
                   DEMAND {demand.id.replace("DEM-", "#")}
                 </div>
@@ -381,7 +381,7 @@ export function LiveNetwork() {
               </div>
             )}
             {phase >= 4 && (
-              <div className="border border-signal-green/50 bg-background/90 px-3 py-2">
+              <div className="border border-signal-green/50 bg-background/90 px-3 py-2 w-[170px]">
                 <div className="font-mono text-[10px] tracking-[0.18em] text-muted-foreground">
                   CIRCUIT MATCH
                 </div>
