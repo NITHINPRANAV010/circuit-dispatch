@@ -50,6 +50,10 @@ function DashboardPage() {
   const opportunities = State.getOpportunities();
   const top = opportunities[0];
 
+  const probByCapacity = new Map<string, number>(
+    opportunities.map((o: any) => [o.capacity.id, o.prediction.opportunityProbability]),
+  );
+
   const edges: NetworkEdge[] = capacities.slice(0, 5).map((c: any) => ({
     id: c.id,
     from: MatchingEngine.normalizeCity(c.source),
@@ -57,6 +61,9 @@ function DashboardPage() {
     openTonnes: c.unusedCapacity ?? c.totalCapacity - c.currentLoad,
     vehicleId: c.vehicleId,
     matched: c.status === "matched",
+    totalCapacity: c.totalCapacity,
+    currentLoad: c.currentLoad,
+    opportunity: probByCapacity.get(c.id),
   }));
 
   return (
@@ -71,17 +78,20 @@ function DashboardPage() {
       }
     >
       {/* KPI rail */}
-      <div className="grid grid-cols-2 divide-border border border-border bg-surface sm:grid-cols-3 lg:grid-cols-5 lg:divide-x rounded-lg">
-        <Stat label="POTENTIAL REVENUE" value={<CountUp value={metrics.potentialRevenue} prefix="₹" />} tone="green" />
-        <Stat label="CAPACITY RECOVERED" value={<CountUp value={metrics.capacityRecovered} suffix="%" />} tone="cyan" />
-        <Stat label="ACTIVE VEHICLES" value={<CountUp value={metrics.activeCapacity} />} />
-        <Stat label="CIRCUIT MATCHES" value={<CountUp value={metrics.aiMatches} />} tone="amber" />
-        <Stat
-          label="CO₂ AVOIDED"
-          value={<CountUp value={metrics.co2Avoided} decimals={1} suffix=" KG" />}
-          hint="Estimated · demo calculation"
-        />
+      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <div className="grid min-w-[640px] grid-cols-5 divide-x divide-border rounded-lg border border-border bg-surface">
+          <Stat label="POTENTIAL REVENUE" value={<CountUp value={metrics.potentialRevenue} prefix="₹" />} tone="green" />
+          <Stat label="CAPACITY RECOVERED" value={<CountUp value={metrics.capacityRecovered} suffix="%" />} tone="cyan" />
+          <Stat label="ACTIVE VEHICLES" value={<CountUp value={metrics.activeCapacity} />} />
+          <Stat label="CIRCUIT MATCHES" value={<CountUp value={metrics.aiMatches} />} tone="amber" />
+          <Stat
+            label="EST. CO₂ IMPACT"
+            value={<CountUp value={metrics.co2Avoided} decimals={1} suffix=" KG" />}
+            hint="Estimated · simulated"
+          />
+        </div>
       </div>
+
 
       {/* Network centerpiece */}
       <Panel
